@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using EduCATS.Data.Models;
 using EduCATS.Demo;
@@ -428,7 +428,6 @@ namespace EduCATS.Networking.AppServices
 			else if (Device.RuntimePlatform == Device.iOS)
 			{
 				return await AppServicesController.GetIOSVersion();
-				
 			}
 			return "";
 		}

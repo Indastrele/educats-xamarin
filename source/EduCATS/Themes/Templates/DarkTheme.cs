@@ -1,4 +1,4 @@
-﻿namespace EduCATS.Themes.Templates
+namespace EduCATS.Themes.Templates
 {
 	/// <summary>
 	/// Dark theme to override the <see cref="DefaultTheme"/>.
@@ -91,6 +91,5 @@
 		override public string AboutTextColor => _whiteColor;
 		override public string AboutButtonTextColor => _whiteColor;
 		override public string AboutButtonBackgroundColor => _baseDarkColor;
-
 	}
 }

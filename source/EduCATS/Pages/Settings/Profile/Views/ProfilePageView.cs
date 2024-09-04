@@ -1,4 +1,4 @@
-﻿using EduCATS.Constants;
+using EduCATS.Constants;
 using EduCATS.Data.Models;
 using EduCATS.Helpers.Forms;
 using EduCATS.Helpers.Forms.Styles;
@@ -186,7 +186,6 @@ namespace EduCATS.Pages.Settings.Profile.Views
 
 		StackLayout createBlock(Label firstText, Label secondText)
 		{
-			
 			return new StackLayout
 			{
 				Margin = _listMarginBlock,
