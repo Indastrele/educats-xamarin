@@ -12,12 +12,14 @@ using EduCATS.Helpers.Date.Enums;
 using EduCATS.Helpers.Forms;
 using EduCATS.Helpers.Logs;
 using EduCATS.Networking;
+using EduCATS.Networking.AppServices;
 using EduCATS.Pages.Today.Base.Models;
 using EduCATS.Themes;
 using Newtonsoft.Json.Linq;
 using Nyxbull.Plugins.CrossLocalization;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using EduCATS.Networking.AppServices;
 
 namespace EduCATS.Pages.Today.Base.ViewModels
 {
@@ -254,21 +256,13 @@ namespace EduCATS.Pages.Today.Base.ViewModels
 
 		async Task getUpdateMessage()
 		{
-			string version = _version;
-
-			if (Device.RuntimePlatform == Device.Android)
-			{
-				version = await GetAndroidVersion();
-			}
-			else if (Device.RuntimePlatform == Device.iOS)
-			{
-				version = await GetIOSVersion();
-				if (version == null)
-				{
-					return;
-				}
-			}
-			if (version != _version)
+			string version = await AppServices.GerVersionStore();
+			string[] a = version.Split('.');
+			string[] b = _version.Split('.');
+			if ((Convert.ToInt32(a[0]) > Convert.ToInt32(b[0]))||
+				(Convert.ToInt32(a[1]) > Convert.ToInt32(b[1]) && Convert.ToInt32(a[0]) == Convert.ToInt32(b[0])) ||
+				(Convert.ToInt32(a[2]) > Convert.ToInt32(b[2]) && Convert.ToInt32(a[0]) == Convert.ToInt32(b[0]) &&
+				Convert.ToInt32(a[1]) == Convert.ToInt32(b[1])))
 			{
 				string title = CrossLocalization.Translate("update_title");
 				string message = CrossLocalization.Translate("update_message");
@@ -283,39 +277,6 @@ namespace EduCATS.Pages.Today.Base.ViewModels
 					else if (Device.RuntimePlatform == Device.iOS)
 						await Launcher.OpenAsync(new Uri(Servers.EducatsBntuIOSMarketString));
 				}
-			}
-		}
-
-		async Task<string> GetAndroidVersion()
-		{
-			string storeUrl = "https://play.google.com/store/apps/details?id=by.bntu.educats";
-			string html;
-			using (HttpClient client = new HttpClient())
-			{
-				html = await client.GetStringAsync(storeUrl);
-			}
-
-			MatchCollection matches = Regex.Matches(html, @"\[\[\[\""\d+\.\d+\.\d+");
-
-			return matches[0].Value.Substring(4);
-		}
-
-		async Task<string> GetIOSVersion()
-		{
-			using (var httpClient = new HttpClient())
-			{
-				string iTunesUrlTemplate = "https://itunes.apple.com/lookup?bundleId=by.bntu.educats";
-				string bundleId = "by.bntu.educats";
-				var url = string.Format(iTunesUrlTemplate, bundleId);
-				var response = await httpClient.GetStringAsync(url);
-				var json = JObject.Parse(response);
-
-				if (json["resultCount"].Value<int>() == 0)
-					return null;
-
-				var appInfo = json["results"].First;
-
-				return appInfo["version"].Value<string>();
 			}
 		}
 
