@@ -21,10 +21,10 @@ jobs:
     environment: github-actions-release
     steps:
       - name: Checkout
-        uses: actions/checkout@v3.5.2
+        uses: actions/checkout@v4.1.7
         
       - name: Artifacts Download
-        uses: actions/download-artifact@v3.0.2
+        uses: actions/download-artifact@v4.1.8
         
       - name: Release Tag
         uses: qoomon/actions--create-tag@v1.0.0
@@ -37,7 +37,7 @@ jobs:
           
       - name: GitHub Release
         id: github_release
-        uses: release-drafter/release-drafter@v5.21.1
+        uses: release-drafter/release-drafter@v6.0.0
         with:
           name: ${{ needs.pre_release.outputs.app_version_number }}.${{ needs.pre_release.outputs.app_build_number }}
           tag: ${{ needs.pre_release.outputs.app_version_number }}.${{ needs.pre_release.outputs.app_build_number }}
@@ -45,7 +45,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           
       - name: Github Release Artifacts Upload
-        uses: nanoufo/action-upload-artifacts-and-release-assets@v1.8
+        uses: nanoufo/action-upload-artifacts-and-release-assets@v2.0
         with:
           path: |
             ./*.ipa/*_${{ needs.pre_release.outputs.app_version_number }}.${{ needs.pre_release.outputs.app_build_number }}.ipa
@@ -62,13 +62,13 @@ jobs:
     environment: github-actions-release
     steps:
       - name: Checkout
-        uses: actions/checkout@v3.5.2
+        uses: actions/checkout@v4.1.7
         
       - name: Generate Documentation
         run: sh ./scripts/docs_generator.sh
         
       - name: Upload Documentation Artifacts
-        uses: actions/upload-artifact@v3.1.2
+        uses: actions/upload-artifact@v3.2.1-node20
         with:
           name: documentation
           path: ${{ env.DOCS_PATH }}
@@ -78,12 +78,12 @@ jobs:
     needs: generate_documentation
     steps:
       - name: Checkout
-        uses: actions/checkout@v3.5.2
+        uses: actions/checkout@v4.1.7
         with:
           ref: 'main'
 
       - name: Artifacts Download
-        uses: actions/download-artifact@v3.0.2
+        uses: actions/download-artifact@v4.1.8
         with:
           name: documentation
           path: ${{ env.DOCS_PATH }}
