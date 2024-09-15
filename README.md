@@ -10,6 +10,8 @@ A cross-platform client for the [Learning Management System EduCATS](https://git
 [![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability-percentage/ilyalehchylin/educats-xamarin?logo=codeclimate)](https://codeclimate.com/github/ilyalehchylin/educats-xamarin/maintainability)
 [![CodeFactor](https://www.codefactor.io/repository/github/ilyalehchylin/educats-xamarin/badge)](https://www.codefactor.io/repository/github/ilyalehchylin/educats-xamarin)
 
+![Repobeats](https://repobeats.axiom.co/api/embed/9ce0151392489367448bf06755f6ac52a6ea7ce4.svg "Repobeats analytics")
+
 ## Pipelines
 
 | Workflow    | Status                                                               |
