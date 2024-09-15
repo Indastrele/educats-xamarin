@@ -118,7 +118,7 @@ jobs:
           ARTIFACTS_APK_PATH: ${{ env.ARTIFACTS_DIRECTORY }}/by.bntu.educats_${{ needs.prepare_build.outputs.app_version }}.${{ needs.prepare_build.outputs.incremented_build_number }}.apk
           
       - name: Upload APK Artifact
-        uses: actions/upload-artifact@v3.2.1-node20
+        uses: actions/upload-artifact@v4
         with:
           name: by.bntu.educats_${{ needs.prepare_build.outputs.app_version }}.${{ needs.prepare_build.outputs.incremented_build_number }}.apk
           path: ${{ env.ARTIFACTS_DIRECTORY }}/by.bntu.educats_${{ needs.prepare_build.outputs.app_version }}.${{ needs.prepare_build.outputs.incremented_build_number }}.apk
@@ -175,7 +175,7 @@ jobs:
           ARTIFACTS_AAB_PATH: ${{ env.ARTIFACTS_DIRECTORY }}/by.bntu.educats_${{ needs.prepare_build.outputs.app_version }}.${{ needs.prepare_build.outputs.incremented_build_number }}.aab
           
       - name: Upload AAB Artifact
-        uses: actions/upload-artifact@v3.2.1-node20
+        uses: actions/upload-artifact@v4
         with:
           name: by.bntu.educats_${{ needs.prepare_build.outputs.app_version }}.${{ needs.prepare_build.outputs.incremented_build_number }}.aab
           path: ${{ env.ARTIFACTS_DIRECTORY }}/by.bntu.educats_${{ needs.prepare_build.outputs.app_version }}.${{ needs.prepare_build.outputs.incremented_build_number }}.aab
@@ -240,7 +240,7 @@ jobs:
           ARTIFACTS_IPA_PATH: ${{ env.ARTIFACTS_DIRECTORY }}/EduCATS_${{ needs.prepare_build.outputs.app_version }}.${{ needs.prepare_build.outputs.incremented_build_number }}.ipa
           
       - name: Upload IPA Artifact
-        uses: actions/upload-artifact@v3.2.1-node20
+        uses: actions/upload-artifact@v4
         with:
           name: EduCATS_${{ needs.prepare_build.outputs.app_version }}.${{ needs.prepare_build.outputs.incremented_build_number }}.ipa
           path: ${{ env.ARTIFACTS_DIRECTORY }}/EduCATS_${{ needs.prepare_build.outputs.app_version }}.${{ needs.prepare_build.outputs.incremented_build_number }}.ipa
@@ -251,7 +251,7 @@ jobs:
     needs: build_aab
     steps:
       - name: Artifacts Download
-        uses: actions/download-artifact@v4.1.8
+        uses: actions/download-artifact@v4
         
       - name: Google Play Deploy
         id: google_play_deploy
@@ -281,7 +281,7 @@ jobs:
     needs: build_ipa
     steps:
       - name: Artifacts Download
-        uses: actions/download-artifact@v4.1.8
+        uses: actions/download-artifact@v4
         
       - name: AppStore Deploy
         run: xcrun altool --upload-app -f $IPA_FILE_PATH --type ios -u ${{ secrets.APPLE_ID }} -p ${{ secrets.APPLE_SPECIFIC_PASSWORD }}
