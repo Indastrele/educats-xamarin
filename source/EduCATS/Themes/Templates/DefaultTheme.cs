@@ -143,9 +143,12 @@ namespace EduCATS.Themes.Templates
 		virtual public string SettingsAboutIcon => "icon_settings_about";
 		virtual public string SettingsFontIcon => "icon_settings_font";
 		virtual public string SettingsLogoutIcon => "icon_settings_logout";
-		virtual public string SettingsGroupUserColor => _greyColor;
+		virtual public string SettingsGroupUserColor => _blackColor;
 		virtual public string SettingsTitleColor => _blackColor;
 		virtual public string SettingsProfileColor => _whiteColor;
+		virtual public string SettingsTableColor => _whiteColor;
+		virtual public string SettingsProfileLabelColor => _greyColor;
+
 
 		virtual public string CheckboxIcon => "icon_checkmark";
 		virtual public string CheckboxDescriptionColor => _greyColor;

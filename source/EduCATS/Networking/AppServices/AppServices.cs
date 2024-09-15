@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+using System;
+using System.Threading.Tasks;
 using EduCATS.Data.Models;
 using EduCATS.Demo;
 using EduCATS.Helpers.Json;
@@ -7,6 +8,7 @@ using EduCATS.Networking.Models.Login;
 using EduCATS.Networking.Models.SaveMarks.Practicals;
 using EduCATS.Networking.Models.Testing;
 using Newtonsoft.Json;
+using Xamarin.Forms;
 
 namespace EduCATS.Networking.AppServices
 {
@@ -410,6 +412,24 @@ namespace EduCATS.Networking.AppServices
 			};
 
 			return JsonController.ConvertObjectToJson(userLogin);
+		}
+
+		/// Fetch files details request.
+		/// </summary>
+		/// <param name="subjectId">Subject ID.</param>
+		/// <returns>Files data.</returns>
+		public static async Task<string> GerVersionStore()
+		{
+			if (Device.RuntimePlatform == Device.Android)
+			{
+				var ads = await AppServicesController.GetAndroidVersion();
+				return ads;
+			}
+			else if (Device.RuntimePlatform == Device.iOS)
+			{
+				return await AppServicesController.GetIOSVersion();
+			}
+			return "";
 		}
 	}
 }

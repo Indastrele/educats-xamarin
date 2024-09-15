@@ -1,4 +1,4 @@
-﻿using EduCATS.Constants;
+using EduCATS.Constants;
 using EduCATS.Data.Models;
 using EduCATS.Helpers.Forms;
 using EduCATS.Helpers.Forms.Styles;
@@ -15,10 +15,17 @@ namespace EduCATS.Pages.Settings.Profile.Views
 {
 	public class ProfilePageView : ContentPage
 	{
-		static Thickness _padding = new Thickness(20);
+		static Thickness _padding = new Thickness(10);
 		static Thickness _buttonsPadding = new Thickness(0, 0, 0, 10);
+		static Thickness _listMargin = new Thickness(20, 0, 10, 0);
+		static Thickness _listMarginLabel = new Thickness(20, 0, 0, 0);
+		static Thickness _listMarginBlock = new Thickness(0, 3, 0, 3);
+
+
+
 
 		const double _spacing = 20;
+		const double _spacingLabel = 0;
 		const double _buttonHeight = 50;
 		const double _avatarHeight = 200;
 		const double _photoBlockHeight = 400;
@@ -48,138 +55,177 @@ namespace EduCATS.Pages.Settings.Profile.Views
 			};
 		}
 
-		StackLayout createPhotoBlock()
+		Frame createPhotoBlock()
 		{
 			var avatar = createAvatar();
 
-			return new StackLayout
+			var roundedLayout = new Frame
 			{
-				BackgroundColor = Color.FromHex(Theme.Current.SettingsProfileColor),
-				Children =
+				CornerRadius = 10,
+				Padding = 0, 
+				BackgroundColor = Color.FromHex(Theme.Current.SettingsTableColor),
+				Content = new StackLayout
 				{
-					avatar
+					Children =
+					{
+						avatar
+					}
 				}
 			};
+
+			return roundedLayout;
 		}
-		StackLayout createSecondInfoBlock()
+		Frame createSecondInfoBlock()
 		{
 			var emailLabel = createLabel("email");
-			var email = createUnderLabel();
-			email.SetBinding(Label.TextProperty, "Email");
+			var emailText = createInfoLabel();
+			emailText.SetBinding(Label.TextProperty, "Email");
+
+			var email = createBlock(emailText, emailLabel);
 
 			var phoneLabel = createLabel("phone");
-			var phone = createUnderLabel();
-			phone.SetBinding(Label.TextProperty, "Phone");
+			var phoneText = createInfoLabel();
+			phoneText.SetBinding(Label.TextProperty, "Phone");
+
+			var phone = createBlock(phoneText, phoneLabel);
 
 			var accountinfoLabel = createLabel("accountinfo");
-			var accountinfo = createUnderLabel();
-			accountinfo.SetBinding(Label.TextProperty, "AccountInfo");
+			var accountinfoText = createInfoLabel();
+			accountinfoText.SetBinding(Label.TextProperty, "AccountInfo");
+
+			var accountinfo = createBlock(accountinfoText, accountinfoLabel);
 
 			var aboutLabel = createLabel("about");
-			var about = createUnderLabel();
-			about.SetBinding(Label.TextProperty, "About");
+			var aboutText = createInfoLabel();
+			aboutText.SetBinding(Label.TextProperty, "About");
 
-			return new StackLayout
+			var about = createBlock(aboutText, aboutLabel);
+
+			var roundedLayout = new Frame
 			{
-				BackgroundColor = Color.FromHex(Theme.Current.SettingsProfileColor),
-				Children =
+				CornerRadius = 10, 
+				Padding = 0, 
+				BackgroundColor = Color.FromHex(Theme.Current.SettingsTableColor),
+				Content = new StackLayout
 				{
-					emailLabel,
-					email,
-					phoneLabel,
-					phone,
-					accountinfoLabel,
-					accountinfo,
-					aboutLabel,
-					about
+					Spacing = _spacing,
+					Children =
+					{
+						email,
+						phone,
+						accountinfo,
+						about
+					}
 				}
 			};
+
+			return roundedLayout;
 		}
 
-		StackLayout createMainInfoBlock()
+		Frame createMainInfoBlock()
 		{
 			var surnameLabel = createLabel("surname");
-			var surname = createUnderLabel();
-			surname.SetBinding(Label.TextProperty, "SecondName");
+			var surnameText = createInfoLabel();
+			surnameText.SetBinding(Label.TextProperty, "SecondName");
+
+			var surname = createBlock(surnameText, surnameLabel);
 
 			var nameLabel = createLabel("name");
-			var name = createUnderLabel();
-			name.SetBinding(Label.TextProperty, "Name");
+			var nameText = createInfoLabel();
+			nameText.SetBinding(Label.TextProperty, "Name");
+
+			var name = createBlock(nameText, nameLabel);
 
 			var patronymicLabel = createLabel("patronymic");
-			var patronymic = createUnderLabel();
-			patronymic.SetBinding(Label.TextProperty, "Patronymic");
+			var patronymicText = createInfoLabel();
+			patronymicText.SetBinding(Label.TextProperty, "Patronymic");
+
+			var patronymic = createBlock(patronymicText, patronymicLabel);
 
 			var usernameLabel = createLabel("login");
-			var login = createUnderLabel();
-			login.SetBinding(Label.TextProperty, "Username");
+			var loginText = createInfoLabel();
+			loginText.SetBinding(Label.TextProperty, "Username");
+
+			var login = createBlock(loginText, usernameLabel);
 
 			var groupLabel = createGroupLabel();
 			groupLabel.SetBinding(Label.TextProperty, "GroupLabel");
-			var groupName = createUnderLabel();
+			var groupName = createInfoLabel();
 			groupName.SetBinding(Label.TextProperty, "Group");
-			var x = groupName;
+
+			var group = createBlock(groupName, groupLabel);
+
+			var layout = new StackLayout
+			{
+				Margin = _listMarginBlock,
+				Spacing = _spacing,
+				Children = 
+				{
+					surname,
+					name,
+					patronymic,
+					login,
+				}
+			};
+
 			if (groupName != null)
 			{
-				return new StackLayout
-				{
-					BackgroundColor = Color.FromHex(Theme.Current.SettingsProfileColor),
-					Children = {
-					surnameLabel,
-					surname,
-					nameLabel,
-					name,
-					patronymicLabel,
-					patronymic,
-					usernameLabel,
-					login,
-					groupLabel,
-					groupName,
-					}
-				};
+				layout.Children.Add(group);
 			}
-			else
+
+			var roundedLayout = new Frame
 			{
-				return new StackLayout
-				{
-					BackgroundColor = Color.FromHex(Theme.Current.SettingsProfileColor),
-					Children = {
-					surnameLabel,
-					surname,
-					nameLabel,
-					name,
-					patronymicLabel,
-					patronymic,
-					usernameLabel,
-					login,
-					}
-				};
-			}
+				CornerRadius = 10, 
+				Padding = 0, 
+				BackgroundColor = Color.FromHex(Theme.Current.SettingsTableColor),
+				Content = layout
+			};
+
+			return roundedLayout;
 		}
+
+		StackLayout createBlock(Label firstText, Label secondText)
+		{
+			return new StackLayout
+			{
+				Margin = _listMarginBlock,
+				Spacing = _spacingLabel,
+				BackgroundColor = Color.FromHex(Theme.Current.SettingsTableColor),
+				Children = {
+				firstText,
+				secondText,
+				}
+			};
+		}
+
 		Label createLabel(string text)
+		{
+			return new Label
+			{
+				TextColor = Color.FromHex(Theme.Current.SettingsProfileLabelColor),
+				Style = AppStyles.GetLabelStyle(),
+				Text = CrossLocalization.Translate(text),
+				FontSize = Device.GetNamedSize(NamedSize.Default, typeof(Label)),
+				Margin = _listMarginLabel
+			};
+		}
+		Label createInfoLabel()
 		{
 			return new Label
 			{
 				TextColor = Color.FromHex(Theme.Current.SettingsGroupUserColor),
 				Style = AppStyles.GetLabelStyle(),
-				Text = CrossLocalization.Translate(text),
-			};
-		}
-		Label createUnderLabel()
-		{
-			return new Label
-			{
-				TextColor = Color.FromHex(Theme.Current.SettingsTitleColor),
-				Style = AppStyles.GetLabelStyle(),
-				TextDecorations = TextDecorations.Underline
+				Margin = _listMargin
 			};
 		}
 		Label createGroupLabel()
 		{
 			return new Label
 			{
-				TextColor = Color.FromHex(Theme.Current.SettingsTitleColor),
+				TextColor = Color.FromHex(Theme.Current.SettingsProfileLabelColor),
 				Style = AppStyles.GetLabelStyle(),
+				FontSize = Device.GetNamedSize(NamedSize.Default, typeof(Label)),
+				Margin = _listMarginLabel
 			};
 		}
 		CachedImage createAvatar()
