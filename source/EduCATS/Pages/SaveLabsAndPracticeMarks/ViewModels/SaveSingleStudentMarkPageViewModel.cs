@@ -24,6 +24,7 @@ namespace EduCATS.Pages.SaveLabsAndPracticeMarks.ViewModels
 		public List<VisitingPageModel> _currentLabsVisitingMarksSubGroup1;
 		public List<VisitingPageModel> _currentLabsVisitingMarksSubGroup2;
 		public List<string> FullNames { get; set; }
+		public List<string> NameOfLabOrPr { get; set; }
 		public TakedLabs _takedLabs { get; set; }
 		public string _title { get; set; }
 		public string studentName { get; set; }
@@ -33,7 +34,7 @@ namespace EduCATS.Pages.SaveLabsAndPracticeMarks.ViewModels
 		public LabsVisitingList fullPractice = new LabsVisitingList();
 
 		public SaveSingleStudentMarkPageViewModel(IPlatformServices services,
-			string nameofLabOrPr, LabsVisitingList marks, TakedLabs prOrLabStat, string title, string _studName, int subGruop)
+			List<string> nameofLabOrPr, LabsVisitingList marks, TakedLabs prOrLabStat, string title, string _studName, int subGruop)
 		{
 			_subGruop = subGruop;
 			studentName = _studName;
@@ -48,7 +49,8 @@ namespace EduCATS.Pages.SaveLabsAndPracticeMarks.ViewModels
 			}
 			_services = services;
 			_takedLabs = prOrLabStat;
-			SelectedShortName = nameofLabOrPr;
+			SelectedShortName = nameofLabOrPr[0];
+			NameOfLabOrPr = nameofLabOrPr;
 		}
 
 		Command _saveMarksButton;
@@ -60,10 +62,26 @@ namespace EduCATS.Pages.SaveLabsAndPracticeMarks.ViewModels
 					async () => await saveMarks()));
 			}
 		}
-
+		public void setMarks(object selectedLab)
+		{
+			foreach (var student in fullMarksLabs.Students)
+			{
+				if (student.FullName == studentName)
+				{
+					for (int i = 0; i < NameOfLabOrPr.Count; i++)
+					{
+						if (NameOfLabOrPr[i] == selectedLab.ToString())
+						{
+							MarkStudent = Convert.ToInt32(student.LabsMarks[i].Mark);
+							return;
+						}
+					}
+				}
+			}
+		}
 		private async Task saveMarks()
 		{
-			string body = ""; 
+			string body = "";
 			string link = "";
 			if (_title == CrossLocalization.Translate("practice_mark"))
 			{
@@ -106,11 +124,11 @@ namespace EduCATS.Pages.SaveLabsAndPracticeMarks.ViewModels
 						{
 							save.id = labMark.StudentLabMarkId;
 						}
-					} 
+					}
 				}
 				body = JsonController.ConvertObjectToJson(save);
 			}
-			
+
 			await AppServicesController.Request(link, body);
 			await _services.Navigation.ClosePage(false);
 
@@ -150,6 +168,13 @@ namespace EduCATS.Pages.SaveLabsAndPracticeMarks.ViewModels
 		{
 			get { return _selectedDate; }
 			set { SetProperty(ref _selectedDate, value); }
+		}
+
+		int _markStudent;
+		public int MarkStudent
+		{
+			get { return _markStudent; }
+			set { SetProperty(ref _markStudent, value); }
 		}
 	}
 }

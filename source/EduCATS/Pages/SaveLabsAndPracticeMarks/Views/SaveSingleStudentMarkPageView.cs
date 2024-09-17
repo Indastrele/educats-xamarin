@@ -20,6 +20,7 @@ namespace EduCATS.Pages.SaveLabsAndPracticeMarks.Views
 		const double _heightRequest = 40;
 
 		static Thickness _padding = new Thickness(10, 1);
+		static Thickness _studentNameMargin = new Thickness(1, 5);
 		public List<int> Marks = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 		public List<string> NameOfLabOrPractice = new List<string>();
 		public string _title { get; set; }
@@ -35,7 +36,7 @@ namespace EduCATS.Pages.SaveLabsAndPracticeMarks.Views
 					NameOfLabOrPractice.Add(pract.ShortName);
 				}
 				BindingContext = new SaveSingleStudentMarkPageViewModel(new PlatformServices(),
-					NameOfLabOrPractice.FirstOrDefault(), marks, prOrLabStat, title, name, subGruop);
+					NameOfLabOrPractice, marks, prOrLabStat, title, name, subGruop);
 			}
 			else if (title == CrossLocalization.Translate("stats_page_labs_rating"))
 			{
@@ -47,7 +48,7 @@ namespace EduCATS.Pages.SaveLabsAndPracticeMarks.Views
 					}
 				}
 				BindingContext = new SaveSingleStudentMarkPageViewModel(new PlatformServices(),
-						NameOfLabOrPractice.FirstOrDefault(), marks, prOrLabStat, title, name, subGruop);
+						NameOfLabOrPractice, marks, prOrLabStat, title, name, subGruop);
 			}
 			BackgroundColor = Color.FromHex(Theme.Current.AppBackgroundColor);
 			Padding = _padding;
@@ -55,11 +56,11 @@ namespace EduCATS.Pages.SaveLabsAndPracticeMarks.Views
 			var entryStyle = getEntryStyle();
 			var inicials = new Label
 			{
-				VerticalOptions = LayoutOptions.CenterAndExpand,
+				Margin = _studentNameMargin,
+				TextColor = Color.FromHex(Theme.Current.StatisticsDetailsNameColor),
 				HorizontalOptions = LayoutOptions.CenterAndExpand,
-				TextColor = Color.FromHex(Theme.Current.StatisticsDetailsTitleColor),
-				Style = AppStyles.GetLabelStyle(),
-				Font = Font.SystemFontOfSize(NamedSize.Large).WithSize(20).WithAttributes(FontAttributes.Bold),
+				HorizontalTextAlignment = TextAlignment.Center,
+				Style = AppStyles.GetLabelStyle(NamedSize.Large),
 				Text = name,
 			};
 
@@ -114,6 +115,7 @@ namespace EduCATS.Pages.SaveLabsAndPracticeMarks.Views
 
 			showComment.SetBinding(Switch.IsToggledProperty, "ShowForStud");
 
+
 			var markPicker = new Picker
 			{
 				BackgroundColor = Color.White,
@@ -122,7 +124,14 @@ namespace EduCATS.Pages.SaveLabsAndPracticeMarks.Views
 				HorizontalTextAlignment = TextAlignment.Center,
 			};
 
-			markPicker.SetBinding(Picker.SelectedItemProperty, "Mark");
+			markPicker.SetBinding(Picker.SelectedItemProperty, "MarkStudent");
+			nameOfPrOrLb.SelectedIndexChanged += (sender, e) =>
+			{
+				var selectedLab = nameOfPrOrLb.SelectedItem;
+				var vm = BindingContext as SaveSingleStudentMarkPageViewModel;
+				vm.setMarks(selectedLab);
+				markPicker.SetBinding(Picker.SelectedItemProperty, "MarkStudent");
+			};
 
 			var datePicker = new Entry
 			{
