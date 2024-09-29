@@ -76,7 +76,7 @@ namespace EduCATS.Pages.Testing.Base.ViewModels
 		{
 			var tests = await DataAccess.GetAvailableTests(CurrentSubject.Id, AppUserData.UserId);
 
-			if (DataAccess.IsError && !DataAccess.IsConnectionError) {
+			     if (DataAccess.IsError && !DataAccess.IsConnectionError) {
 				PlatformServices.Device.MainThread(
 					() => PlatformServices.Dialogs.ShowError(DataAccess.ErrorMessage));
 			}
@@ -84,8 +84,8 @@ namespace EduCATS.Pages.Testing.Base.ViewModels
 			var testsForSelfStudy = getGroup(tests, "testing_self_study", true);
 			var testsForControl = getGroup(tests, "testing_knowledge_control", false);
 			var groups = new List<TestingGroupModel>();
-			groups = addNonEmptyGroup(groups, testsForSelfStudy);
 			groups = addNonEmptyGroup(groups, testsForControl);
+			groups = addNonEmptyGroup(groups, testsForSelfStudy);
 			return groups;
 		}
 
@@ -108,7 +108,7 @@ namespace EduCATS.Pages.Testing.Base.ViewModels
 		List<TestModel> getSeparateTests(IList<TestModel> tests, bool isSelfStudy)
 		{
 			return tests.Where(
-				t => t.ForSelfStudy.Equals(isSelfStudy)).ToList();
+				t => t.ForSelfStudy.Equals(isSelfStudy) && t.Title.Contains("ИНС") == false).ToList();
 		}
 
 		void openTest(object testObject)
