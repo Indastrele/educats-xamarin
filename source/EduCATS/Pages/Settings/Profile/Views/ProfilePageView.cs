@@ -21,7 +21,7 @@ namespace EduCATS.Pages.Settings.Profile.Views
 		static Thickness _listMarginLabel = new Thickness(20, 0, 0, 0);
 		static Thickness _listMarginBlock = new Thickness(0, 3, 0, 3);
 
-		const double _spacing = 20;
+		const double _spacing = 25;
 		const double _spacingLabel = 0;
 		const double _buttonHeight = 50;
 		const double _avatarHeight = 200;
